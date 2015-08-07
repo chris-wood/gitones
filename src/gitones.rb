@@ -3,6 +3,7 @@ require 'logger'
 require 'pathname'
 require 'net/https'
 
+# https://www.mashape.com/vivekn/sentiment-3
 sentimentURL = "TODO"
 
 def buildSentimentURL(sentence)
