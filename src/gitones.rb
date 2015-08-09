@@ -36,20 +36,37 @@ ARGV.each{|repo|
     entriesByDate = {}
     entriesByFile = {}
 
-    git.log.each{|entry|
+    numEntries = git.log.size
+    for index in 0..(numEntries - 1)
+        entry = git.log[index]
+        
         user = entry.author.name
         date = entry.date.strftime("%m-%d-%y")
+        diffStats = git.diff(entry, git.log[index + 1]).stats
+        touchedFiles = diffStats[:files]
         
-        if entriesByUser[user] != nil
+        if entriesByUser[user] == nil
             entriesByUser[user] = []
         end 
         entriesByUser[user] << entry
 
-        if entriesByDate[date] != nil
+        if entriesByDate[date] == nil
             entriesByDate[date] = []
         end
         entriesByDate[date] << entry
 
-        puts entry.to_s
-    }
+        touchedFiles.each{|fileName, value|
+            if entriesByFile[fileName] == nil
+                entriesByFile[fileName] = []
+            end
+            entriesByFile[fileName] << entry
+        }
+
+        # puts entry.to_s
+    end
+
+    puts "Indexes..."
+    puts entriesByUser.to_s
+    puts entriesByDate.to_s
+    puts entriesByFile.to_s
 }
