@@ -21,16 +21,35 @@ def getSentenceSentiment(sentence)
     response.body 
 end
 
+def commitMessage(entry)
+    entry.message
+end
+
 ARGV.each{|repo|
-    
     fullpath = Pathname.new(repo)
     puts "Analyzing #{fullpath.realpath.to_s}"
     
     git = Git.open(repo, :log => Logger.new(STDOUT))
 
-    puts git.log
+    # Indexes by user, date, and file
+    entriesByUser = {}
+    entriesByDate = {}
+    entriesByFile = {}
 
     git.log.each{|entry|
+        user = entry.author.name
+        date = entry.date.strftime("%m-%d-%y")
+        
+        if entriesByUser[user] != nil
+            entriesByUser[user] = []
+        end 
+        entriesByUser[user] << entry
+
+        if entriesByDate[date] != nil
+            entriesByDate[date] = []
+        end
+        entriesByDate[date] << entry
+
         puts entry.to_s
     }
 }
