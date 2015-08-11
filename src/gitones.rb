@@ -6,7 +6,7 @@ require 'net/https'
 
 # https://www.mashape.com/vivekn/sentiment-3
 sentimentURL = "TODO"
-Indico.api_key = "indico.key"
+Indico.api_key = File.read("indico.key")
 
 def buildSentimentURL(sentence)
     return sentimentURL
