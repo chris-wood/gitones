@@ -1,12 +1,14 @@
 require 'git'
 require 'logger'
 require 'indico'
+require 'plotly'
 require 'pathname'
 require 'net/https'
 
 # https://www.mashape.com/vivekn/sentiment-3
 sentimentURL = "TODO"
 Indico.api_key = File.read("indico.key")
+plotly = PlotLy.new('caw4567', File.read("plotly.key")
 
 def buildSentimentURL(sentence)
     return sentimentURL
@@ -19,12 +21,7 @@ def getSentenceSentiment(sentence)
         request = Net::HTTP::Get.new(uri.request_uri)
         http.request(request) # Net::HTTPResponse object returned, becomes the returned response
     end
-    
     response.body 
-end
-
-def commitMessage(entry)
-    entry.message
 end
 
 class Commit
