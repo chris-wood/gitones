@@ -179,11 +179,12 @@ ARGV.each{|repo|
         files = commits[0].stats[:total][:files]
         sentiment = commits[0].sentiment
         lib = commits[0].howLibertarian
-        
-        # TODO: join lines
+
+        csvcontents = [add, del, lines, files, sentiment, lib]
+        csvline = csvcontents.join(",")
 
         puts date
-        fout.puts(date.to_s + "," + add.to_s + "," + del.to_s + ","+ lines.to_s + "," + files.to_s + "," + sentiment.to_s + "," + lib.to_s)
+        fout.puts(csvline)
     }
     fout.close
 }

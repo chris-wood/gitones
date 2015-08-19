@@ -1,3 +1,5 @@
 indico.key
 plotly.key
+*.png 
+*.csv
 
