@@ -137,7 +137,7 @@ ARGV.each{|repo|
         entry = git.log[index]
 
         user = entry.author.name
-        date = entry.date.strftime("%m-%d-%y") ## TODO: we might want a better date
+        date = entry.date.strftime("%-m-%-d-%Y") # - means no padding
         diff = git.diff(entry, git.log[index + 1])
         diffStats = diff.stats
         touchedFiles = diffStats[:files]
@@ -170,8 +170,8 @@ ARGV.each{|repo|
     # puts entriesByDate.to_s
     # puts entriesByFile.to_s
 
-    # prepare plot data
-    fout = File.open("test.csv", "w")
+    # prepare the overall plot data
+    fout = File.open("overall.csv", "w")
     entriesByDate.each{|data, commits|
         add = commits[0].stats[:total][:insertions]
         del = commits[0].stats[:total][:deletions]
@@ -180,11 +180,57 @@ ARGV.each{|repo|
         sentiment = commits[0].sentiment
         lib = commits[0].howLibertarian
 
-        csvcontents = [add, del, lines, files, sentiment, lib]
+        csvcontents = [date.to_s, add, del, lines, files, sentiment, lib]
         csvline = csvcontents.join(",")
 
         puts date
         fout.puts(csvline)
     }
     fout.close
+
+    # prepare the per-file plot data
+    entriesByFile.each{|file, commits|
+        fout = File.open(file.to_s + ".csv")
+
+        commits.each{|commit|
+            add = commits[0].stats[:total][:insertions]
+            del = commits[0].stats[:total][:deletions]
+            lines = commits[0].stats[:total][:lines]
+            files = commits[0].stats[:total][:files]
+            sentiment = commits[0].sentiment
+            lib = commits[0].howLibertarian
+
+            csvcontents = [date.to_s, add, del, lines, files, sentiment, lib]
+            csvline = csvcontents.join(",")
+
+            puts date
+            fout.puts(csvline)
+        }
+
+        fout.close
+    }
+
+    # prepare the per-user plot data
+    entriesByFile.each{|user, commits|
+        fout = File.open(user.to_s + ".csv")
+
+        commits.each{|commit|
+            add = commits[0].stats[:total][:insertions]
+            del = commits[0].stats[:total][:deletions]
+            lines = commits[0].stats[:total][:lines]
+            files = commits[0].stats[:total][:files]
+            sentiment = commits[0].sentiment
+            lib = commits[0].howLibertarian
+
+            csvcontents = [date.to_s, add, del, lines, files, sentiment, lib]
+            csvline = csvcontents.join(",")
+
+            puts date
+            fout.puts(csvline)
+        }
+
+        fout.close
+    }
+
+
 }
