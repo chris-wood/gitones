@@ -190,6 +190,9 @@ ARGV.each{|repo|
 
     # prepare the per-file plot data
     entriesByFile.each{|file, commits|
+
+        # TODO: canonical the file
+
         fout = File.open(file.to_s + ".csv")
 
         commits.each{|commit|
@@ -231,6 +234,4 @@ ARGV.each{|repo|
 
         fout.close
     }
-
-
 }
