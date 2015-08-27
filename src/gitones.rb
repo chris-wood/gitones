@@ -29,7 +29,6 @@ end
 
 def generateGnuLineGraph(data, value)
 
-
     commands =
       %Q(
          set terminal png
