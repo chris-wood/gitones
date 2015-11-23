@@ -7,7 +7,7 @@ require 'net/https'
 
 # https://www.mashape.com/vivekn/sentiment-3
 sentimentURL = "TODO"
-Indico.api_key = File.read("indico.key")
+#Indico.api_key = File.read("indico.key")
 
 def buildSentimentURL(sentence)
     return sentimentURL
@@ -28,7 +28,6 @@ def getSentenceSentiment(sentence)
 end
 
 def generateGnuLineGraph(data, value)
-
 
     commands =
       %Q(
@@ -193,15 +192,15 @@ ARGV.each{|repo|
 
         # TODO: canonical the file
 
-        fout = File.open(file.to_s + ".csv")
+        fout = File.open(file.sub("/", "_").to_s + ".csv", "w")
 
         commits.each{|commit|
-            add = commits[0].stats[:total][:insertions]
-            del = commits[0].stats[:total][:deletions]
-            lines = commits[0].stats[:total][:lines]
-            files = commits[0].stats[:total][:files]
-            sentiment = commits[0].sentiment
-            lib = commits[0].howLibertarian
+            add = commit.stats[:total][:insertions]
+            del = commit.stats[:total][:deletions]
+            lines = commit.stats[:total][:lines]
+            files = commit.stats[:total][:files]
+            sentiment = commit.sentiment
+            lib = commit.howLibertarian
 
             csvcontents = [date.to_s, add, del, lines, files, sentiment, lib]
             csvline = csvcontents.join(",")
@@ -215,15 +214,15 @@ ARGV.each{|repo|
 
     # prepare the per-user plot data
     entriesByFile.each{|user, commits|
-        fout = File.open(user.to_s + ".csv")
+        fout = File.open(user.sub("/", "_").to_s + ".csv", "w")
 
         commits.each{|commit|
-            add = commits[0].stats[:total][:insertions]
-            del = commits[0].stats[:total][:deletions]
-            lines = commits[0].stats[:total][:lines]
-            files = commits[0].stats[:total][:files]
-            sentiment = commits[0].sentiment
-            lib = commits[0].howLibertarian
+            add = commit.stats[:total][:insertions]
+            del = commit.stats[:total][:deletions]
+            lines = commit.stats[:total][:lines]
+            files = commit.stats[:total][:files]
+            sentiment = commit.sentiment
+            lib = commit.howLibertarian
 
             csvcontents = [date.to_s, add, del, lines, files, sentiment, lib]
             csvline = csvcontents.join(",")
